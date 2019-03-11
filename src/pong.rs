@@ -3,9 +3,8 @@ use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Component, DenseVecStorage};
 use amethyst::prelude::*;
 use amethyst::renderer::{
-    Camera, PngFormat, Projection, SpriteRender, SpriteSheet,
-    SpriteSheetFormat, SpriteSheetHandle, Texture, TextureMetadata,
-    Flipped,
+    Camera, Flipped, PngFormat, Projection, SpriteRender, SpriteSheet, SpriteSheetFormat,
+    SpriteSheetHandle, Texture, TextureMetadata,
 };
 
 pub const PADDLE_HEIGHT: f32 = 16.0;
@@ -90,7 +89,7 @@ fn load_sprite_sheet(world: &mut World) -> SpriteSheetHandle {
         texture_handle, // We pass it the handle of the texture we want it to use
         (),
         &sprite_sheet_store,
-        )
+    )
 }
 
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -102,11 +101,11 @@ fn initialise_camera(world: &mut World) {
     world
         .create_entity()
         .with(Camera::from(Projection::orthographic(
-                    0.0,
-                    ARENA_WIDTH,
-                    0.0,
-                    ARENA_HEIGHT,
-                    )))
+            0.0,
+            ARENA_WIDTH,
+            0.0,
+            ARENA_HEIGHT,
+        )))
         .with(transform)
         .build();
 }

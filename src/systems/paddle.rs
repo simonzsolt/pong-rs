@@ -12,7 +12,7 @@ impl<'s> System<'s> for PaddleSystem {
         WriteStorage<'s, Transform>,
         ReadStorage<'s, Paddle>,
         Read<'s, InputHandler<String, String>>,
-        );
+    );
 
     fn run(&mut self, (mut transforms, paddles, input): Self::SystemData) {
         for (paddle, transform) in (&paddles, &mut transforms).join() {
@@ -25,9 +25,9 @@ impl<'s> System<'s> for PaddleSystem {
                 let paddle_y = transform.translation().y;
                 transform.set_y(
                     (paddle_y + scaled_amount)
-                    .min(ARENA_HEIGHT - PADDLE_HEIGHT * 0.5)
-                    .max(PADDLE_HEIGHT * 0.5),
-                    );
+                        .min(ARENA_HEIGHT - PADDLE_HEIGHT * 0.5)
+                        .max(PADDLE_HEIGHT * 0.5),
+                );
             }
         }
     }

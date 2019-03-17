@@ -13,8 +13,8 @@ use amethyst::{
 pub const PADDLE_HEIGHT: f32 = 16.0;
 pub const PADDLE_WIDTH: f32 = 4.0;
 
-pub const BALL_VELOCITY_X: f32 = 75.0;
-pub const BALL_VELOCITY_Y: f32 = 50.1;
+pub const BALL_VELOCITY_X: f32 = 25.0;
+pub const BALL_VELOCITY_Y: f32 = 15.0;
 pub const BALL_RADIUS: f32 = 2.0;
 
 #[derive(Default)]
@@ -25,6 +25,7 @@ pub struct ScoreBoard {
   pub stroke_right: i32,
   pub stroke_max_left: i32,
   pub stroke_max_right: i32,
+  pub serve_duration: u64,
 }
 
 /// ScoreText contains the ui text components that display the score
@@ -35,6 +36,7 @@ pub struct ScoreText {
   pub p2_stroke: Entity,
   pub p1_max_stroke: Entity,
   pub p2_max_stroke: Entity,
+  pub serve_time: Entity,
 }
 
 pub struct Ball {
@@ -73,6 +75,8 @@ impl Component for Paddle {
 }
 
 fn initialise_scoreboard(world: &mut World) {
+  const STROKE_FONT_SZIE: f32 = 25.0;
+
   let font = world.read_resource::<Loader>().load(
     "fonts/square.ttf",
     TtfFormat,
@@ -80,6 +84,7 @@ fn initialise_scoreboard(world: &mut World) {
     (),
     &world.read_resource(),
   );
+
   let p1_transform = UiTransform::new(
     "P1".to_string(),
     Anchor::TopMiddle,
@@ -90,6 +95,7 @@ fn initialise_scoreboard(world: &mut World) {
     50.,
     0,
   );
+
   let p2_transform = UiTransform::new(
     "P2".to_string(),
     Anchor::TopMiddle,
@@ -100,40 +106,55 @@ fn initialise_scoreboard(world: &mut World) {
     50.,
     0,
   );
+
   let p1_max_strokes = UiTransform::new(
     "P1MaxStrokes".to_string(),
     Anchor::BottomMiddle,
-    -50.,
+    -150.,
     50.,
     1.,
     200.,
     50.,
     0,
   );
+
   let p2_max_strokes = UiTransform::new(
     "P2MaxStrokes".to_string(),
     Anchor::BottomMiddle,
-    100.,
+    200.,
     50.,
     1.,
     200.,
     50.,
     0,
   );
+
   let p1_strokes = UiTransform::new(
     "P1Strokes".to_string(),
     Anchor::BottomMiddle,
-    -100.,
+    -200.,
     50.,
     1.,
     200.,
     50.,
     0,
   );
+
   let p2_strokes = UiTransform::new(
     "P2Strokes".to_string(),
     Anchor::BottomMiddle,
+    150.,
     50.,
+    1.,
+    200.,
+    50.,
+    0,
+  );
+
+  let elapsed_time = UiTransform::new(
+    "ElapsedTime".to_string(),
+    Anchor::BottomMiddle,
+    0.,
     50.,
     1.,
     200.,
@@ -170,7 +191,7 @@ fn initialise_scoreboard(world: &mut World) {
       font.clone(),
       "0".to_string(),
       [1., 1., 1., 1.],
-      50.,
+      STROKE_FONT_SZIE,
     ))
     .build();
 
@@ -181,7 +202,7 @@ fn initialise_scoreboard(world: &mut World) {
       font.clone(),
       "0".to_string(),
       [1., 1., 1., 1.],
-      50.,
+      STROKE_FONT_SZIE,
     ))
     .build();
 
@@ -192,13 +213,24 @@ fn initialise_scoreboard(world: &mut World) {
       font.clone(),
       "0".to_string(),
       [1., 1., 1., 1.],
-      50.,
+      STROKE_FONT_SZIE,
     ))
     .build();
 
   let p2_stroke = world
     .create_entity()
     .with(p2_strokes)
+    .with(UiText::new(
+      font.clone(),
+      "0".to_string(),
+      [1., 1., 1., 1.],
+      STROKE_FONT_SZIE,
+    ))
+    .build();
+
+  let serve_time = world
+    .create_entity()
+    .with(elapsed_time)
     .with(UiText::new(
       font.clone(),
       "0".to_string(),
@@ -214,6 +246,7 @@ fn initialise_scoreboard(world: &mut World) {
     p2_stroke,
     p1_max_stroke,
     p2_max_stroke,
+    serve_time,
   });
 }
 

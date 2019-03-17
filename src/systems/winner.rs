@@ -1,10 +1,9 @@
+use crate::pong::{Ball, ScoreBoard, ScoreText, ARENA_WIDTH};
 use amethyst::{
   core::transform::Transform,
   ecs::prelude::{Join, ReadExpect, System, Write, WriteStorage},
   ui::UiText,
 };
-
-use crate::pong::{Ball, ScoreBoard, ScoreText, ARENA_WIDTH};
 
 pub struct WinnerSystem;
 
@@ -47,11 +46,12 @@ impl<'s> System<'s> for WinnerSystem {
       if did_hit {
         ball.velocity[0] = -ball.velocity[0]; // Reverse Direction
         transform.set_x(ARENA_WIDTH / 2.0); // Reset Position
-        scores.stroke_left = 0;
-        scores.stroke_right = 0;
         if let Some(text) = ui_text.get_mut(score_text.p2_score) {
           text.text = scores.score_right.to_string();
         }
+        // Reset stroke counter
+        scores.stroke_left = 0;
+        scores.stroke_right = 0;
         if let Some(text) = ui_text.get_mut(score_text.p1_stroke) {
           text.text = scores.stroke_left.to_string();
         }

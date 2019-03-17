@@ -57,27 +57,35 @@ impl<'s> System<'s> for BounceSystem {
         ) {
           if paddle.side == Side::Left && ball.velocity[0] < 0.0 {
             ball.velocity[0] = -ball.velocity[0];
-            // Count max strokes
-            scores.stroke_max_left = (scores.stroke_max_left + 1).min(999);
-            if let Some(text) = ui_text.get_mut(score_text.p1_max_stroke) {
-              text.text = scores.stroke_max_left.to_string();
-            }
+
             // Count strokes per serve
             scores.stroke_left = (scores.stroke_left + 1).min(999);
             if let Some(text) = ui_text.get_mut(score_text.p1_stroke) {
               text.text = scores.stroke_left.to_string();
             }
+
+            // Count max strokes
+            if scores.stroke_left >= scores.stroke_max_left {
+              scores.stroke_max_left = scores.stroke_left;
+              if let Some(text) = ui_text.get_mut(score_text.p1_max_stroke) {
+                text.text = scores.stroke_max_left.to_string();
+              }
+            }
           } else if paddle.side == Side::Right && ball.velocity[0] > 0.0 {
             ball.velocity[0] = -ball.velocity[0];
-            // Count max strokes
-            scores.stroke_max_right = (scores.stroke_max_right + 1).min(999);
-            if let Some(text) = ui_text.get_mut(score_text.p2_max_stroke) {
-              text.text = scores.stroke_max_right.to_string();
-            }
+
             // Count strokes per serve
             scores.stroke_right = (scores.stroke_right + 1).min(999);
             if let Some(text) = ui_text.get_mut(score_text.p2_stroke) {
               text.text = scores.stroke_right.to_string();
+            }
+
+            // Count max strokes
+            if scores.stroke_right >= scores.stroke_max_right {
+              scores.stroke_max_right = scores.stroke_right;
+              if let Some(text) = ui_text.get_mut(score_text.p2_max_stroke) {
+                text.text = scores.stroke_max_right.to_string();
+              }
             }
           }
         }

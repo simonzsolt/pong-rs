@@ -27,7 +27,6 @@ impl<'s> System<'s> for WinnerSystem {
       let did_hit = if ball_x <= ball.radius {
         // Right player scored on the left side.
         scores.score_right = (scores.score_right + 1).min(999);
-
         if let Some(text) = ui_text.get_mut(score_text.p2_score) {
           text.text = scores.score_right.to_string();
         }
@@ -48,6 +47,17 @@ impl<'s> System<'s> for WinnerSystem {
       if did_hit {
         ball.velocity[0] = -ball.velocity[0]; // Reverse Direction
         transform.set_x(ARENA_WIDTH / 2.0); // Reset Position
+        scores.stroke_left = 0;
+        scores.stroke_right = 0;
+        if let Some(text) = ui_text.get_mut(score_text.p2_score) {
+          text.text = scores.score_right.to_string();
+        }
+        if let Some(text) = ui_text.get_mut(score_text.p1_stroke) {
+          text.text = scores.stroke_left.to_string();
+        }
+        if let Some(text) = ui_text.get_mut(score_text.p2_stroke) {
+          text.text = scores.stroke_right.to_string();
+        }
       }
     }
   }

@@ -23,6 +23,8 @@ pub struct ScoreBoard {
   pub score_right: i32,
   pub stroke_left: i32,
   pub stroke_right: i32,
+  pub stroke_max_left: i32,
+  pub stroke_max_right: i32,
 }
 
 /// ScoreText contains the ui text components that display the score
@@ -31,6 +33,8 @@ pub struct ScoreText {
   pub p2_score: Entity,
   pub p1_stroke: Entity,
   pub p2_stroke: Entity,
+  pub p1_max_stroke: Entity,
+  pub p2_max_stroke: Entity,
 }
 
 pub struct Ball {
@@ -96,10 +100,30 @@ fn initialise_scoreboard(world: &mut World) {
     50.,
     0,
   );
+  let p1_max_strokes = UiTransform::new(
+    "P1MaxStrokes".to_string(),
+    Anchor::BottomMiddle,
+    -50.,
+    50.,
+    1.,
+    200.,
+    50.,
+    0,
+  );
+  let p2_max_strokes = UiTransform::new(
+    "P2MaxStrokes".to_string(),
+    Anchor::BottomMiddle,
+    100.,
+    50.,
+    1.,
+    200.,
+    50.,
+    0,
+  );
   let p1_strokes = UiTransform::new(
     "P1Strokes".to_string(),
     Anchor::BottomMiddle,
-    -50.,
+    -100.,
     50.,
     1.,
     200.,
@@ -139,6 +163,28 @@ fn initialise_scoreboard(world: &mut World) {
     ))
     .build();
 
+  let p1_max_stroke = world
+    .create_entity()
+    .with(p1_max_strokes)
+    .with(UiText::new(
+      font.clone(),
+      "0".to_string(),
+      [1., 1., 1., 1.],
+      50.,
+    ))
+    .build();
+
+  let p2_max_stroke = world
+    .create_entity()
+    .with(p2_max_strokes)
+    .with(UiText::new(
+      font.clone(),
+      "0".to_string(),
+      [1., 1., 1., 1.],
+      50.,
+    ))
+    .build();
+
   let p1_stroke = world
     .create_entity()
     .with(p1_strokes)
@@ -166,6 +212,8 @@ fn initialise_scoreboard(world: &mut World) {
     p2_score,
     p1_stroke,
     p2_stroke,
+    p1_max_stroke,
+    p2_max_stroke,
   });
 }
 

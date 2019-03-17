@@ -1,0 +1,17 @@
+tab_spaces = 2
+hard_tabs = true
+array_layout = "Block"
+reorder_imports = true
+newline_style = "Unix"
+spaces_within_angle_brackets = false
+spaces_within_parens = false
+spaces_within_square_brackets = false
+fn_args_layout = "Block"
+fn_call_style = "Block"
+fn_return_indent = "WithArgs"
+fn_brace_style = "SameLineWhere"
+generics_indent= "Block"
+item_brace_style = "PreferSameLine"
+where_layout = "Horizontal"
+where_pred_indent = "Block"
+where_style = "Rfc"

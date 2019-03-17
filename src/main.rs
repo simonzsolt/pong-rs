@@ -9,7 +9,7 @@ use amethyst::{
     core::transform::TransformBundle,
     input::InputBundle,
     prelude::*,
-    renderer::{DisplayConfig, DrawFlat2D, Event, Pipeline, RenderBundle, Stage, VirtualKeyCode},
+    renderer::{DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage},
     ui::{DrawUi, UiBundle},
     utils::application_root_dir,
 };
@@ -29,8 +29,7 @@ fn main() -> amethyst::Result<()> {
     );
 
     let binding_path = format!("{}/resources/bindings_config.ron", application_root_dir());
-    let input_bundle =
-        InputBundle::<String, String>::new().with_bindings_from_file(binding_path)?;
+    let input_bundle = InputBundle::<String, String>::new().with_bindings_from_file(binding_path)?;
 
     let game_data = GameDataBuilder::default()
         .with_bundle(RenderBundle::new(pipe, Some(config)).with_sprite_sheet_processor())?
